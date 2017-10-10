@@ -212,7 +212,7 @@ public class StudentDatabaseHelper {
 			// If student data was inserted correctly, associate telephone numbers, if any
 			if (newStudent.getPhoneNumbers() != null) {
 				for (PhoneNumber p : newStudent.getPhoneNumbers()) {
-					int phoneNumberPkId = StudentPhoneNumberDatabaseHelper.resolve(p);
+					int phoneNumberPkId = PhoneNumberDatabaseHelper.resolve(p);
 					StudentPhoneNumberDatabaseHelper.link(phoneNumberPkId, studentPkId);
 				}
 			}
@@ -320,7 +320,7 @@ public class StudentDatabaseHelper {
 				StudentPhoneNumberDatabaseHelper.unlinkAll(studentPkId);
 				if (updatedStudent.getPhoneNumbers() != null) {
 					for (PhoneNumber p : updatedStudent.getPhoneNumbers()) {
-						int phoneNumberPkId = StudentPhoneNumberDatabaseHelper.resolve(p);
+						int phoneNumberPkId = PhoneNumberDatabaseHelper.resolve(p);
 						StudentPhoneNumberDatabaseHelper.link(phoneNumberPkId, studentPkId);
 					}
 				}
@@ -351,13 +351,13 @@ public class StudentDatabaseHelper {
 		try {
 			DatabaseConnection connection = new DatabaseConnection();
 
-			String idQuery = String.format("SELECT pk_id FROM Student WHERE %s=?", identifier);
+			String idQuery = String.format("SELECT StudentPk_id FROM VW_Student WHERE %s=?", identifier);
 			PreparedStatement idStatement = connection.getConnection().prepareStatement(idQuery);
 			idStatement.setString(1, value);
 			ResultSet idResultSet = idStatement.executeQuery();
 
 			if (idResultSet.next()) {
-				pkId = idResultSet.getInt("pk_id");
+				pkId = idResultSet.getInt("StudentPk_id");
 			}
 
 		} catch (SQLException e) {
