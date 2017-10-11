@@ -4,4 +4,4 @@
 /.directory
 *.jar
 *.kate-swp
-/WebContent/WEB-INF/lib/
+/WebContent/WEB-INF/lib

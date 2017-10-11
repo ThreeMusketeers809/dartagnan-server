@@ -1,7 +1,6 @@
 package service;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -14,9 +13,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import core.Employee;
@@ -87,7 +89,7 @@ public class EmployeeService extends GenericWebService<Employee> {
 	@POST
 	@Path(SERVICE_ROOT)
 	@Consumes({ ServicePresets.PRIMARY_OBJECT_MEDIA_TYPE, ServicePresets.SECONDARY_OBJECT_MEDIA_TYPE })
-	public Response create(Employee entity) {
+	public Response create(@Context UriInfo uriInfo, Employee entity) {
 		Response response;
 		Employee createdEmployee = null;
 		
@@ -96,13 +98,9 @@ public class EmployeeService extends GenericWebService<Employee> {
 			System.err.println("RECEIVED NULL");
 		}
 		if (createdEmployee != null) {
-			URI createdUri = null;
-			try {
-				createdUri = new URI(String.format("/%s", createdEmployee.getEntityId()));
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-			response = Response.created(createdUri).build();
+			EntityTag entityTag = new EntityTag(createdEmployee.getEntityId());
+			URI entityUri = URI.create(String.format("%s/%s", uriInfo.getRequestUri(), entityTag.getValue()));
+			response = Response.created(entityUri).tag(entityTag).build();
 		} else {
 			response = Response.status(Status.BAD_REQUEST).build();
 		}

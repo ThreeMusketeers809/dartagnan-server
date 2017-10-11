@@ -1,7 +1,6 @@
 package service;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -14,10 +13,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 import core.Student;
 import service.ContentTypeHeader;
@@ -86,7 +88,8 @@ public class StudentService extends GenericWebService<Student> {
 
 		Student student = studentDao.get(entityId);
 		if (student == null) {
-			response = Response.status(Response.Status.NOT_FOUND).entity("Student not found for UUID: " + entityId).build();
+			response = Response.status(Response.Status.NOT_FOUND).entity("Student not found for UUID: " + entityId)
+					.build();
 		} else {
 			response = Response.ok(student, responseMediaType).build();
 		}
@@ -98,22 +101,18 @@ public class StudentService extends GenericWebService<Student> {
 	@POST
 	@Path(SERVICE_ROOT)
 	@Consumes({ ServicePresets.PRIMARY_OBJECT_MEDIA_TYPE, ServicePresets.SECONDARY_OBJECT_MEDIA_TYPE })
-	public Response create(Student entity) {
+	public Response create(@Context UriInfo uriInfo, Student entity) {
 		Response response;
 		Student createdStudent = null;
-		
+
 		if (entity != null) {
 			createdStudent = studentDao.create(entity);
 			System.err.println("RECEIVED NULL");
 		}
 		if (createdStudent != null) {
-			URI createdUri = null;
-			try {
-				createdUri = new URI(String.format("/%s", createdStudent.getEntityId()));
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
-			response = Response.created(createdUri).build();
+			EntityTag entityTag = new EntityTag(createdStudent.getEntityId());
+			URI entityUri = URI.create(String.format("%s/%s", uriInfo.getRequestUri(), entityTag.getValue()));
+			response = Response.created(entityUri).tag(entityTag).build();
 		} else {
 			response = Response.status(Status.BAD_REQUEST).build();
 		}

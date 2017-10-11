@@ -2,6 +2,7 @@ package service;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import service.ContentTypeHeader;
 import service.ContentTypeUnit;
@@ -65,7 +66,7 @@ public abstract class GenericWebService<T> {
 		return mediaType;
 	}
 
-	public abstract Response create(T entity);
+	public abstract Response create(UriInfo uriInfo, T entity);
 
 	public abstract Response read(String acceptHeader, String entityId);
 
