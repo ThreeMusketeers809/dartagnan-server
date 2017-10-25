@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import core.PhoneNumber;
+import core.entities.PhoneNumber;
 
 public class PhoneNumberDatabaseHelper {
 	/**

@@ -1,11 +1,11 @@
-package service;
+package dao;
 
 import java.util.List;
 
-import core.Employee;
+import core.entities.Employee;
 import db.EmployeeDatabaseHelper;
 
-public class EmployeeDao extends GenericDao<Employee> {
+public class EmployeeDao extends AbstractDao<Employee> {
 
 	@Override
 	public List<Employee> getAll() {

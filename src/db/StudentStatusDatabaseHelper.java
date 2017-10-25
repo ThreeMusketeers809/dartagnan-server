@@ -4,7 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import core.Student.Status;
+import core.entities.Student.Status;
 
 public class StudentStatusDatabaseHelper {
 	public static int getStatusPkId(Status status) {

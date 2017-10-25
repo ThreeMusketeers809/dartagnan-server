@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import core.PhoneNumber;
+import core.entities.PhoneNumber;
 
 public class StudentPhoneNumberDatabaseHelper {
 

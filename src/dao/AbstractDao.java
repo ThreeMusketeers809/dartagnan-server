@@ -1,8 +1,8 @@
-package service;
+package dao;
 
 import java.util.List;
 
-public abstract class GenericDao<T> {
+public abstract class AbstractDao<T> {
 	public abstract List<T> getAll();
 
 	public abstract T create(T entity);

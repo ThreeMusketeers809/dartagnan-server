@@ -1,11 +1,11 @@
-package service;
+package dao;
 
 import java.util.List;
 
-import core.Student;
+import core.entities.Student;
 import db.StudentDatabaseHelper;
 
-public class StudentDao extends GenericDao<Student> {
+public class StudentDao extends AbstractDao<Student> {
 	public Student getByCedula(String cedula) {
 		return StudentDatabaseHelper.getByUniqueIdentifier("cedula", cedula);
 	}

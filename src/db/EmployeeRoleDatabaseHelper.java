@@ -4,7 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import core.Employee.Role;
+import core.entities.Employee.Role;
 
 public class EmployeeRoleDatabaseHelper {
 	public static int getPkId(Role role) {

@@ -4,8 +4,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import service.ContentTypeHeader;
-import service.ContentTypeUnit;
+import core.service.ContentTypeHeader;
+import core.service.ContentTypeUnit;
+import core.service.ServicePresets;
 
 /**
  * 
@@ -16,8 +17,7 @@ import service.ContentTypeUnit;
  * @author Amin Guzman
  * 
  */
-public abstract class GenericWebService<T> {
-	final static String CONTENT_TYPE_WILDCARD = "*/*";
+public abstract class AbstractWebService<T> {
 
 	/**
 	 * 
@@ -30,7 +30,7 @@ public abstract class GenericWebService<T> {
 	 *         Empty or null headers default to a wildcard value.
 	 */
 	public ContentTypeHeader parseAcceptHeader(String acceptHeader) {
-		ContentTypeHeader header = ContentTypeHeader.parse(CONTENT_TYPE_WILDCARD);
+		ContentTypeHeader header = ContentTypeHeader.parse(MediaType.WILDCARD);
 
 		if (acceptHeader != null && acceptHeader.trim().length() > 0) {
 			try {

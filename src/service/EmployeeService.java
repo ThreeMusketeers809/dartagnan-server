@@ -21,17 +21,19 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
-import core.Employee;
-import service.ServicePresets;
+import core.entities.Employee;
+import core.service.ContentTypeHeader;
+import core.service.ServicePresets;
+import dao.EmployeeDao;
 
 @Path(ServicePresets.QUERY_SERVICES_PATH)
 @Produces({ ServicePresets.PRIMARY_OBJECT_MEDIA_TYPE, ServicePresets.SECONDARY_OBJECT_MEDIA_TYPE })
-public class EmployeeService extends GenericWebService<Employee> {
+public class EmployeeService extends AbstractWebService<Employee> {
 	private final String SERVICE_ROOT = "/employees";
 	private final String ENTITY_ID = "uuid";
 	private final String ENTITY_PATH = "/{" + ENTITY_ID + "}";
 
-	private EmployeeDao employeeDao = new EmployeeDao();
+	private EmployeeDao employeeDao;
 
 	@GET
 	@Path(SERVICE_ROOT)
@@ -95,7 +97,6 @@ public class EmployeeService extends GenericWebService<Employee> {
 		
 		if (entity != null) {
 			createdEmployee = employeeDao.create(entity);
-			System.err.println("RECEIVED NULL");
 		}
 		if (createdEmployee != null) {
 			EntityTag entityTag = new EntityTag(createdEmployee.getEntityId());
@@ -146,5 +147,9 @@ public class EmployeeService extends GenericWebService<Employee> {
 			response = Response.status(Status.BAD_REQUEST).build();
 		}
 		return response;
+	}
+	
+	public EmployeeService() {
+		employeeDao = new EmployeeDao();
 	}
 }

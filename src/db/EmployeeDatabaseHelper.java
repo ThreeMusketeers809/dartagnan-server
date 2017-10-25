@@ -8,8 +8,8 @@ import java.util.List;
 
 import com.mysql.jdbc.Statement;
 
-import core.Employee;
-import core.PhoneNumber;
+import core.entities.Employee;
+import core.entities.PhoneNumber;
 
 public class EmployeeDatabaseHelper {
 

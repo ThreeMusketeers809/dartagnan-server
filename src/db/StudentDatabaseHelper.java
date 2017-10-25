@@ -8,8 +8,8 @@ import java.util.List;
 
 import com.mysql.jdbc.Statement;
 
-import core.PhoneNumber;
-import core.Student;
+import core.entities.PhoneNumber;
+import core.entities.Student;
 
 /**
  * Helper class for accessing and modifying Student data.

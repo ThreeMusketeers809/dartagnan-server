@@ -21,17 +21,19 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
-import core.Student;
-import service.ContentTypeHeader;
+import core.entities.Student;
+import core.service.ContentTypeHeader;
+import core.service.ServicePresets;
+import dao.StudentDao;
 
 @Path(ServicePresets.QUERY_SERVICES_PATH)
 @Produces({ ServicePresets.PRIMARY_OBJECT_MEDIA_TYPE, ServicePresets.SECONDARY_OBJECT_MEDIA_TYPE })
-public class StudentService extends GenericWebService<Student> {
+public class StudentService extends AbstractWebService<Student> {
 	private final String SERVICE_ROOT = "/students";
 	private final String ENTITY_ID = "uuid";
 	private final String ENTITY_PATH = "/{" + ENTITY_ID + "}";
 
-	private StudentDao studentDao = new StudentDao();
+	private StudentDao studentDao;
 
 	@GET
 	@Path(SERVICE_ROOT)
@@ -107,7 +109,6 @@ public class StudentService extends GenericWebService<Student> {
 
 		if (entity != null) {
 			createdStudent = studentDao.create(entity);
-			System.err.println("RECEIVED NULL");
 		}
 		if (createdStudent != null) {
 			EntityTag entityTag = new EntityTag(createdStudent.getEntityId());
@@ -158,5 +159,9 @@ public class StudentService extends GenericWebService<Student> {
 			response = Response.status(Status.BAD_REQUEST).build();
 		}
 		return response;
+	}
+	
+	public StudentService() {
+		studentDao = new StudentDao();
 	}
 }
